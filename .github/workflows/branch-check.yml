@@ -1,0 +1,22 @@
+name: Branch Merge Order Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - stg
+
+jobs:
+  branch-check:
+    name: Enforce Branch Merge Order
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check branch merge order
+        run: bash .github/scripts/branch-check.sh
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+          HEAD_BRANCH: ${{ github.head_ref }}
